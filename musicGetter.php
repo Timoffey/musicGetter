@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: musicGetter
- * Plugin URI: github
+ * Plugin URI: https://github.com/Timoffey/musicGetter
  * Description: Плагин забирает данные музыкальных треков с центральной БД и выкладывает их в виде записей WordPress
  * Version: 0.1
  * Author: Timoffey Cosman
