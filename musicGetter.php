@@ -8,12 +8,15 @@
  * Author URI: https://timoffey.com
  * License: GPLv2 or later
  */
-register_activation_hook(__FILE__, 'install_musicGetter_plugin');
-register_uninstall_hook(__FILE__, 'uninstall_musicGetter_plugin');
 
+// При установке плагина создаём БД
+register_activation_hook(__FILE__, 'install_musicGetter_plugin');
 function intall_musicGetter_plugin(){
 
 }
+
+// При удалении плагина – сносим БД
+register_uninstall_hook(__FILE__, 'uninstall_musicGetter_plugin');
 function unintall_musicGetter_plugin(){
 	
 }
