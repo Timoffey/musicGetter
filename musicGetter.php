@@ -11,8 +11,7 @@
 
 
 //==========УСТАНОВКА И УДАЛЕНИЕ ПЛАГИНА=======
-// При установке плагина создаём БД
-register_activation_hook(__FILE__, 'install_musicGetter_plugin');
+
 
 function intall_musicGetter_plugin(){
 	global $wpdb;
@@ -82,8 +81,7 @@ function intall_musicGetter_plugin(){
 	}
 }
 
-// При удалении плагина – сносим БД
-register_uninstall_hook(__FILE__, 'uninstall_musicGetter_plugin');
+
 
 function unintall_musicGetter_plugin(){
     global $wpdb;
@@ -95,3 +93,8 @@ function unintall_musicGetter_plugin(){
     $sql = "DROP TABLE IF EXISTS $table_name,$table_name2,$table_name3,$table_name4,$table_name5";
     $wpdb->query($sql);
 }
+
+// При установке плагина создаём БД
+register_activation_hook(__FILE__, 'install_musicGetter_plugin');
+// При удалении плагина – сносим БД
+register_uninstall_hook(__FILE__, 'uninstall_musicGetter_plugin');
