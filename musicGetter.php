@@ -22,14 +22,14 @@ function install_musicGetter_plugin(){
 	$table_name = $wpdb->prefix . 'mg_config';
 	if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name ){
 	    $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
+	    `db_url` varchar(40) NOT NULL,
 	    `db_login` varchar(20) NOT NULL,
 	    `db_pass` varchar(20) NOT NULL,
-	    `db_url` varchar(40) NOT NULL,
-	    `refresh_rate` int(10) NOT NULL,
-	    `refresh_quantity` int(10) NOT NULL
+	    `refresh_quantity` int(10) NOT NULL,
+	    `refresh_rate` int(10) NOT NULL
 	    ) ENGINE = MyISAM DEFAULT CHARSET=utf8;";
     $wpdb->query($sql);
-    $sql2 = "INSERT INTO $table_name (db_login, db_pass, db_url, refresh_rate, refresh_quantity) VALUES ('login', 'pass', 'https://test.test', 36600, 1000)";
+    $sql2 = "INSERT INTO $table_name (db_url, db_login, db_pass, refresh_quantity, refresh_rate) VALUES ('https://test.test', 'login', 'pass', 1000 , 60)";
     $wpdb->query($sql2);
 	}
 

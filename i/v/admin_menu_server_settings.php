@@ -3,7 +3,7 @@ if($_POST){
 	include_once(dirname(__FILE__)."/../c/admin_menu_server_settings_edit.php"); 
 }
 include_once(dirname(__FILE__)."/../m/config.php");
-$config=get();
+$config = new Config;
 ?>
 <style>
 	[type=submit]{
@@ -40,12 +40,25 @@ $config=get();
 	Логин от БД: <div class="input"><input type="text" size="50" name="db_login" value="<?=$config->db_login?>"></div><br>
 	Пароль от БД:<div class="input"><input type="password" size="50" name="db_pass" value="<?=$config->db_pass?>"></div><br>
 	Cтрок БД обновляемых за раз: <div class="input"><input type="number" name="refresh_quantity" value="<?=$config->refresh_quantity?>"></div><br>
-	Обновлять БД каждые <div class="input input-time"><input name = "refresh_rate" type="number"> <select name="refresh_period">
-		<option value = "m">Минут</option>
-		<option value = "h">Часов</option>
-		<option value = "d">Дней</option>
+	Обновлять БД каждые <div class="input input-time"><input name = "refresh_rate" type="number" value="<?=$config->refresh_rate?>"> <select name="refresh_period">
+		<option id = "minutes" value = "m">Минут</option>
+		<option id = "hours" value = "h">Часов</option>
+		<option id = "days" value = "d">Дней</option>
 	</select></div>
 	<input type="submit" class="input input-time" value="Сохранить">
 	</form>
-
 </div>
+<script type="text/javascript">
+
+switch ('<?=$config->refresh_period?>') {
+		case 'm':
+			document.getElementById('minutes').setAttribute('selected', 1)
+			break;
+		case 'h':
+			document.getElementById('hours').setAttribute('selected', 1)
+			break;
+		case 'd':
+			document.getElementById('days').setAttribute('selected', 1)
+			break;	
+	}	
+</script>
