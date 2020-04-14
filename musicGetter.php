@@ -97,3 +97,31 @@ function uninstall_musicGetter_plugin(){
     $sql = "DROP TABLE IF EXISTS $table_name,$table_name2,$table_name3,$table_name4,$table_name5";
     $wpdb->query($sql);
 }
+
+//========СОЗДАНИЕ МЕНЮ В АДМИНКЕ=====
+add_action('admin_menu','mg_admin_menu');
+
+function mg_admin_menu(){
+    add_menu_page('Settings','Настройки сервера','administrator','admin_menu_server_settings','admin_menu_server_settings');
+    add_submenu_page('admin_menu_server_settings','Import','Настройки импорта','administrator','admin_menu_import_settings','admin_menu_import_settings');
+    add_submenu_page('admin_menu_server_settings','GEO','Настройки ГЕО','administrator','admin_menu_geo_settings','admin_menu_geo_settings');
+    add_submenu_page('admin_menu_server_settings','Template','Настройки шаблона','administrator','admin_menu_template_settings','admin_menu_template_settings');
+}
+
+
+// Подключаем страницу с настройками БД
+function admin_menu_server_settings(){
+    include_once('i/v/admin_menu_server_settings.php');
+}
+// Подключаем страницу с настройками импорта
+function admin_menu_import_settings(){
+    include_once('i/v/admin_menu_import_settings.php');
+}
+// Подключаем страницу с настройками ГЕО
+function admin_menu_geo_settings(){
+    include_once('i/v/admin_menu_geo_settings.php');
+}
+// Подключаем страницу с настройками шаблона
+function admin_menu_template_settings(){
+    include_once('i/v/admin_menu_template_settings.php');
+}
