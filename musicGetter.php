@@ -22,15 +22,15 @@ function install_musicGetter_plugin(){
 	$table_name = $wpdb->prefix . 'mg_config';
 	if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name ){
 	    $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
-	    `id` int(11) NOT NULL AUTO_INCREMENT,
 	    `db_login` varchar(20) NOT NULL,
 	    `db_pass` varchar(20) NOT NULL,
 	    `db_url` varchar(40) NOT NULL,
 	    `refresh_rate` int(10) NOT NULL,
-	    `refresh_quantity` int(10) NOT NULL,
-	    PRIMARY KEY (`id`)
-	    ) ENGINE = MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;";
+	    `refresh_quantity` int(10) NOT NULL
+	    ) ENGINE = MyISAM DEFAULT CHARSET=utf8;";
     $wpdb->query($sql);
+    $sql2 = "INSERT INTO $table_name (db_login, db_pass, db_url, refresh_rate, refresh_quantity) VALUES ('login', 'pass', 'https://test.test', 36600, 1000)";
+    $wpdb->query($sql2);
 	}
 
 	// Создаём таблицу под локальную версию БД. Она пустая, чтобы заполнить её колонками
@@ -44,16 +44,9 @@ function install_musicGetter_plugin(){
     $wpdb->query($sql);
 	}
 
-	// Создаём таблицу под фильтр, для заполнения локальной версии БД. Она пустая, чтобы заполнить её колонками
-	// необходимо нажать кнопку "Получение полей из БД" в разделе Import 
-	$table_name = $wpdb->prefix . 'mg_import_filter';
-	if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name ){
-	    $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
-	    `id` int(11) NOT NULL AUTO_INCREMENT,
-	    PRIMARY KEY (`id`)
-	    ) ENGINE = MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;";
-    $wpdb->query($sql);
-	}
+	// Не создаём таблицу под фильтр, для заполнения локальной версии БД. Она пустая, чтобы заполнить её колонками
+	// необходимо нажать кнопку "Получение полей из БД" в разделе Import, там и создадим. 
+
 
 	// Создаём таблицу под настройки Гео. Тут будет переключатель мультилинка
 	// и настройка блэк/вайт листов на поля со ссылками. 
@@ -61,12 +54,10 @@ function install_musicGetter_plugin(){
 	$table_name = $wpdb->prefix . 'mg_geo';
 	if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name ){
 	    $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
-	    `id` int(11) NOT NULL AUTO_INCREMENT,
 	    `multi_links` tinyint(1) NOT NULL,
 	    `geo_field_1` varchar(10) NOT NULL,
-	    `geo_field_2` varchar(10) NOT NULL,
-	    PRIMARY KEY (`id`)
-	    ) ENGINE = MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;";
+	    `geo_field_2` varchar(10) NOT NULL
+	    ) ENGINE = MyISAM DEFAULT CHARSET=utf8;";
     $wpdb->query($sql);
 	}
 
@@ -75,11 +66,9 @@ function install_musicGetter_plugin(){
 	$table_name = $wpdb->prefix . 'mg_geo_lists';
 	if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name ){
 	    $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
-	    `id` int(11) NOT NULL AUTO_INCREMENT,
 	    `geo_field_1` varchar(255) NOT NULL,
-	    `geo_field_2` varchar(255) NOT NULL,
-	    PRIMARY KEY (`id`)
-	    ) ENGINE = MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;";
+	    `geo_field_2` varchar(255) NOT NULL
+	    ) ENGINE = MyISAM DEFAULT CHARSET=utf8;";
     $wpdb->query($sql);
 	}
 }
