@@ -25,11 +25,12 @@ function install_musicGetter_plugin(){
 	    `db_url` varchar(40) NOT NULL,
 	    `db_login` varchar(20) NOT NULL,
 	    `db_pass` varchar(20) NOT NULL,
+	    `db_name` varchar(20) NOT NULL,
 	    `refresh_quantity` int(10) NOT NULL,
 	    `refresh_rate` int(10) NOT NULL
 	    ) ENGINE = MyISAM DEFAULT CHARSET=utf8;";
     $wpdb->query($sql);
-    $sql2 = "INSERT INTO $table_name (db_url, db_login, db_pass, refresh_quantity, refresh_rate) VALUES ('https://test.test', 'login', 'pass', 1000 , 60)";
+    $sql2 = "INSERT INTO $table_name (db_url, db_login, db_pass, db_name, refresh_quantity, refresh_rate) VALUES ('https://test.test', 'login', 'pass', 'dbname', 1000 , 60)";
     $wpdb->query($sql2);
 	}
 

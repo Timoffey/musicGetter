@@ -2,8 +2,8 @@
 if($_POST){
 	include_once(dirname(__FILE__)."/../c/admin_menu_server_settings_edit.php"); 
 }
-include_once(dirname(__FILE__)."/../m/config.php");
-$config = new Config;
+include_once(dirname(__FILE__)."/../m/mg_config.php");
+$config = new MG_Config;
 ?>
 <style>
 	[type=submit]{
@@ -39,6 +39,7 @@ $config = new Config;
 	Адрес БД: <div class="input"><input type="url" size="50" name="db_url" value="<?=$config->db_url?>"></div><br>
 	Логин от БД: <div class="input"><input type="text" size="50" name="db_login" value="<?=$config->db_login?>"></div><br>
 	Пароль от БД:<div class="input"><input type="password" size="50" name="db_pass" value="<?=$config->db_pass?>"></div><br>
+	Имя БД:<div class="input"><input type="text" size="50" name="db_name" value="<?=$config->db_name?>"></div><br>
 	Cтрок БД обновляемых за раз: <div class="input"><input type="number" name="refresh_quantity" value="<?=$config->refresh_quantity?>"></div><br>
 	Обновлять БД каждые <div class="input input-time"><input name = "refresh_rate" type="number" value="<?=$config->refresh_rate?>"> <select name="refresh_period">
 		<option id = "minutes" value = "m">Минут</option>

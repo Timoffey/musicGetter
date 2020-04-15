@@ -1,3 +1,9 @@
+<?php
+if ($_POST){
+		include_once(dirname(__FILE__)."/../c/admin_menu_import_settings_edit.php"); 
+	}
+?>
+
 <style>
 	[type=submit]{
 		background-color: #4CAF50; /* Green */
@@ -27,6 +33,7 @@
 
 <div class = "wrapper">
 	<form method="post">
+		<input type="hidden" name="actualize" value = "on">
 		Для актуализации структуры локальной БД нажмите <div class="input"><input type="submit" value="Обновить"></div>
 	</form>
 
