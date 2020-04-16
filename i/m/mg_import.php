@@ -17,13 +17,19 @@ class MG_Import{
 	}
 
 	// Получаем поля локальной БД
-	private function get_local_db(){
+	public function get_local_db(){
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'mg_list';
 		// Смотрим заголовки и отправляем их, так мы на зависим от наличия записей
 		$row = $wpdb->get_row("SELECT * FROM $table_name");
 			$row = $wpdb->get_col_info('name');
-			return $row;
+		//Убираем поле id из массива локальной БД
+		foreach ($row as $key => $value) {
+			if($value=='id'){
+				unset($row[$key]);
+			}
+		}
+		return $row;
 	}
 	
 	// Получаем поля удалённой БД
@@ -46,24 +52,20 @@ class MG_Import{
 			// А это мы заменяем индекс типа на название типа, для последующего составления SQL запроса.
 			$table[$value->name] = $this->convert_mysqli_type_to_str($value->type)."(".$value->length.")";
 		}
+		
+		//Убираем поле id из массива удалённой БД
+		foreach ($table as $key => $value) {
+			if($key=='id'){
+				unset($table[$key]);
+			}
+		}
 		return $table;
 	}
 	
 	// Нахождение разницы между удалённой базой и локальной
 	// От remote берём $key, а от local берём $value
 	private function compare($local_db, $remote_db){
-		//Убираем поле id из массива удалённой БД
-		foreach ($remote_db as $key => $value) {
-			if($key=='id'){
-				unset($remote_db[$key]);
-			}
-		}
-		//Убираем поле id из массива локальной БД
-		foreach ($local_db as $key => $value) {
-			if($value=='id'){
-				unset($local_db[$key]);
-			}
-		}
+
 		// Находим новые поля и возвращаем. Смотреть будем по ключам, потому что в значениях у удалённой типы.
 		// При попытке перевернуть удалённую и смотреть по ней, выходила чушь.
 		$diff=array_diff_key($remote_db, array_flip($local_db));
@@ -72,7 +74,7 @@ class MG_Import{
 
 	// Добавляем недостающие поля в локальную базу
 	// Принимает массив формата $name => $type. Например Name => varchar(20).
-	private function update($diff){
+	private function update_db($diff){
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'mg_list';
 		$sql = "ALTER TABLE $table_name ADD (";
@@ -89,6 +91,11 @@ class MG_Import{
 		$remote_db=$this->get_remote_db();
 		$local_db=$this->get_local_db();
 		$diff = $this->compare($local_db,$remote_db);
-		if ($diff) $this->update($diff);
+		if ($diff){
+			$this->update_db($diff);
+			return 1;
+		}else{
+			return 0;
+		}
 	}
 }

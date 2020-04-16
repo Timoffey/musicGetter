@@ -30,7 +30,7 @@ function install_musicGetter_plugin(){
 	    `refresh_rate` int(10) NOT NULL
 	    ) ENGINE = MyISAM DEFAULT CHARSET=utf8;";
     $wpdb->query($sql);
-    $sql2 = "INSERT INTO $table_name (db_url, db_login, db_pass, db_name, refresh_quantity, refresh_rate) VALUES ('https://test.test', 'login', 'pass', 'dbname', 1000 , 60)";
+    $sql2 = "INSERT INTO $table_name (db_url, db_login, db_pass, db_name, refresh_quantity, refresh_rate) VALUES ('localhost', 'login', 'pass', 'dbname', 1000 , 60)";
     $wpdb->query($sql2);
 	}
 
@@ -39,9 +39,9 @@ function install_musicGetter_plugin(){
 	$table_name = $wpdb->prefix . 'mg_list';
 	if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name ){
 	    $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
-	    `id` int(11) NOT NULL AUTO_INCREMENT,
+	    `id` int(11) NOT NULL,
 	    PRIMARY KEY (`id`)
-	    ) ENGINE = MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;";
+	    ) ENGINE = MyISAM DEFAULT CHARSET=utf8;";
     $wpdb->query($sql);
 	}
 

@@ -1,7 +1,13 @@
 <?php
 if ($_POST){
-		include_once(dirname(__FILE__)."/../c/admin_menu_import_settings_edit.php"); 
+		include_once(dirname(__FILE__)."/../c/admin_menu_import_settings_edit.php");
 	}
+	include_once(dirname(__FILE__)."/../m/mg_import.php");
+ 	$import=new MG_Import;
+ 	$list = $import->get_local_db();
+ 	$list_size=count($list);
+
+
 ?>
 
 <style>
@@ -41,13 +47,12 @@ if ($_POST){
 
 	<form method="post">
 		Выберите поля для проверки их актуальности 
-		<select multiple size="6">
-			<option>first_field</option>
-			<option>second_field</option>
-			<option>third_field</option>
-			<option>forth_field</option>
-			<option>fifth_field</option>
-			<option>sixth_field</option>
+		<select name="update_fields[]" multiple size="<?=$list_size?>">
+			<?php
+				for ($i=1;$i<=$list_size;$i++){
+					echo "<option value='$list[$i]'>$list[$i]</option>";
+				}
+			?>
 		</select>
 		<div class="input"><input type="submit" value="Проверить"></div>
 	</form>
@@ -57,13 +62,12 @@ if ($_POST){
 	<div class="wrapper wrapper2">
 	<form method="post">
 		<h2>Фильтры для импорта</h2>
-		Адрес БД: <div class="input"><input type="url" size="50" name="db_url"></div><br>
-		Адрес БД: <div class="input"><input type="url" size="50" name="db_url"></div><br>
-		Адрес БД: <div class="input"><input type="url" size="50" name="db_url"></div><br>
-		Адрес БД: <div class="input"><input type="url" size="50" name="db_url"></div><br>
-		
-			
-		
+		<?php
+			for ($i=1;$i<=$list_size;$i++){
+				echo "$list[$i]: <div class='input'><input type='text' size='50' name='$list[$i]'></div><br>";
+				echo "<input hidden name= 'import_filter[]' value=$list[$i]>";
+			}
+		?>
 		<input type="submit" value="Настроить">
 	</form>
 </div>
