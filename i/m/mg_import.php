@@ -45,15 +45,19 @@ class MG_Import{
 		    echo "<br>Не удалось подключиться к MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 		}
 		// Получаем структуру рабочей таблицы, для сверки
-		$res = $mysqli->query("SELECT * FROM $config->db_name LIMIT 1");
+		$res = $mysqli->query("SELECT * FROM $config->db_table_name LIMIT 1");
 		$row = $res->fetch_fields();
 		
 		$table = array();
 		foreach ($row as $value) {
-			// Эта строчка фиксит странный баг, с типом VARCHAR. Почему-то его размер умножается на 4.
-			if($value->type==253)$value->length*=0.25;
-			// А это мы заменяем индекс типа на название типа, для последующего составления SQL запроса.
-			$table[$value->name] = $this->convert_mysqli_type_to_str($value->type)."(".$value->length.")";
+			// Дурацкая  DATE требует отсутствия указания размера, пришлось городить эту строку...
+			if($value->type==10){
+				$table[$value->name] = $this->convert_mysqli_type_to_str($value->type);
+			}else{
+				// Эта строчка фиксит странный баг, с типом VARCHAR. Почему-то его размер умножается на 4.
+				if($value->type==253)$value->length*=0.25;
+				$table[$value->name] = $this->convert_mysqli_type_to_str($value->type)."(".$value->length.")";
+			}
 		}
 		
 		//Убираем поле id из массива удалённой БД
