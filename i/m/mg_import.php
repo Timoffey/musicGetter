@@ -10,6 +10,9 @@ class MG_Import{
 			case 3:
 				return 'int';
 				break;
+			case 10:
+				return 'date';
+				break;
 			case 253:
 				return 'varchar';
 				break;		
