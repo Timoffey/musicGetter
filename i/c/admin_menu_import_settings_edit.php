@@ -17,8 +17,8 @@ if (isset($_POST['update_fields'])){
 }
 
 if (isset($_POST['import_filter'])){
-	echo 'Фильтры на поля:<br>';
 	foreach ($_POST['import_filter'] as $key) {
-		echo $key.' - '.$_POST[$key].'<br>';
+		$array[$key]=$_POST[$key];
 	}
+	$import->set_filter($array);
 }

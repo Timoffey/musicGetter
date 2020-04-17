@@ -91,6 +91,50 @@ class MG_Import{
 		// Отрезаем последнюю запятую, и закрывем скобку. Запрос готов, шлём!
 		$sql=rtrim($sql, ', ').')';
 		$wpdb->query($sql);
+		$this->update_filter($diff);
+	}
+
+	// Добавляем недостающие поля в базу с полями фильтров для импорта
+	private function update_filter($diff){
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'mg_import_filter';
+		// В случае, если такой базы вообще не создано, создаём её.
+		if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name ) {
+			$this->create_filter($table_name,$diff);
+			return;
+		}
+		// Иначе, просто добавляем недостающие поля
+		$sql = "ALTER TABLE $table_name ADD (";
+		foreach ($diff as $name => $type) {
+			$sql .= $name.' varchar(40), ';
+		}
+		// Отрезаем последнюю запятую, и закрывем скобку. Запрос готов, шлём!
+		$sql=rtrim($sql, ', ').')';
+		$wpdb->query($sql);
+
+	}
+
+	// При первом запуске база будет отсутствовать, поэтому её надо создать и заполнить
+	private function create_filter($table_name, $diff){
+		global $wpdb;
+		$sql = "CREATE TABLE IF NOT EXISTS `$table_name` (";
+    	$sql2_names = "";
+    	$sql2_values = "";
+	    foreach ($diff as $name => $type) {
+	    	$sql .= $name.' varchar(40) NOT NULL, ';
+	    	$sql2_names .= $name.', ';
+	    	$sql2_values .= '" ", ';
+	    }
+	    // Отрезаем последнюю запятую, и закрывем скобку. 
+	    $sql=rtrim($sql, ', ').')';
+	    // И добавляем сторчку с движком нашей БД и кодировкой. Запрос готов, шлём!
+	    $sql .="ENGINE = MyISAM DEFAULT CHARSET=utf8;";
+	    $wpdb->query($sql);
+	    // Также необходимо заполнить её пустыми значениями, чтобы, в последствии, можно было апдейтить.
+	    $sql2_names=rtrim($sql2_names, ', ');
+	    $sql2_values=rtrim($sql2_values, ', ');
+	    $sql = "INSERT INTO $table_name ($sql2_names) VALUES ($sql2_values)";
+	    $wpdb->query($sql);
 	}
 	
 	// Актуализация локальной БД относительно удалённой. Если разница есть – добавляем поля.
@@ -104,5 +148,22 @@ class MG_Import{
 		}else{
 			return 0;
 		}
+	}
+
+	public function set_filter($filter){
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'mg_import_filter';
+		$query = "UPDATE $table_name SET";
+		foreach ($filter as $key => $value) {
+			$query .=' '.$key.' = "'.$value.'", ';
+		}
+		$query=rtrim($query, ', ');
+		$wpdb->query($query);
+	}
+	public function get_filter(){
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'mg_import_filter';
+		$row = $wpdb->get_row("SELECT * FROM $table_name");
+		return $row;
 	}
 }

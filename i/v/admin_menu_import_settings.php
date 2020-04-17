@@ -4,8 +4,11 @@ if ($_POST){
 	}
 	include_once(dirname(__FILE__)."/../m/mg_import.php");
  	$import=new MG_Import;
+ 	$filter=$import->get_filter();
  	$list = $import->get_local_db();
  	$list_size=count($list);
+
+
 
 
 ?>
@@ -36,7 +39,6 @@ if ($_POST){
 	}
 
 </style>
-
 <div class = "wrapper">
 	<form method="post">
 		<input type="hidden" name="actualize" value = "on">
@@ -64,7 +66,7 @@ if ($_POST){
 		<h2>Фильтры для импорта</h2>
 		<?php
 			for ($i=1;$i<=$list_size;$i++){
-				echo "$list[$i]: <div class='input'><input type='text' size='50' name='$list[$i]'></div><br>";
+				echo "$list[$i]: <div class='input'><input type='text' size='50' name='$list[$i]' value='".$filter->{$list[$i]}."''></div><br>";
 				echo "<input hidden name= 'import_filter[]' value=$list[$i]>";
 			}
 		?>
