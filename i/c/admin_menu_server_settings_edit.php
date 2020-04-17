@@ -1,5 +1,6 @@
 <?php 
 // Сохраняем данные из запроса
+$is_on=$_POST['is_on'];
 $db_url=$_POST['db_url'];
 $db_login=$_POST['db_login'];
 $db_pass=$_POST['db_pass'];
@@ -11,6 +12,6 @@ $refresh_period=$_POST['refresh_period'];
 
 include_once(dirname(__FILE__)."/../m/mg_config.php");
 $config = new MG_Config;
-$config->set($db_url, $db_login, $db_pass, $db_name, $refresh_quantity, $refresh_rate, $refresh_period);
+$config->set($is_on, $db_url, $db_login, $db_pass, $db_name, $refresh_quantity, $refresh_rate, $refresh_period);
 
 
