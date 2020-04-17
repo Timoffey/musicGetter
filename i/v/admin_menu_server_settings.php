@@ -101,6 +101,7 @@ input:checked + .slider:before {
 	Логин от БД: <div class="input"><input type="text" size="50" name="db_login" value="<?=$config->db_login?>"></div><br>
 	Пароль от БД:<div class="input"><input type="password" size="50" name="db_pass" value="<?=$config->db_pass?>"></div><br>
 	Имя БД:<div class="input"><input type="text" size="50" name="db_name" value="<?=$config->db_name?>"></div><br>
+	Имя таблицы:<div class="input"><input type="text" size="50" name="db_table_name" value="<?=$config->db_table_name?>"></div><br>
 	Cтрок БД обновляемых за раз: <div class="input"><input type="number" name="refresh_quantity" value="<?=$config->refresh_quantity?>"></div><br>
 	Обновлять БД каждые <div class="input input-time"><input name = "refresh_rate" type="number" value="<?=$config->refresh_rate?>"> <select name="refresh_period">
 		<option id = "minutes" value = "m">Минут</option>

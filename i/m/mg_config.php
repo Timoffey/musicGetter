@@ -6,6 +6,7 @@ class MG_Config
 	public $db_login;
 	public $db_pass;
 	public $db_name;
+	public $db_table_name;
 	public $refresh_quantity;
 	public $refresh_rate;
 	public $refresh_period;
@@ -39,12 +40,12 @@ class MG_Config
 		}
 	}
 	
-	public function set($is_on, $db_url, $db_login, $db_pass, $db_name, $refresh_quantity, $refresh_rate, $refresh_period){
+	public function set($is_on, $db_url, $db_login, $db_pass, $db_name, $db_table_name, $refresh_quantity, $refresh_rate, $refresh_period){
 		$refresh_rate=$this->convert_to_seconds($refresh_rate, $refresh_period);
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'mg_config';
-		$query = "UPDATE $table_name SET is_on = %d, db_url = %s, db_login = %s, db_pass = %s, db_name=%s,refresh_rate = %d, refresh_quantity = %d";
-		$wpdb->query($wpdb->prepare($query, $is_on, $db_url, $db_login, $db_pass, $db_name, $refresh_rate, $refresh_quantity));
+		$query = "UPDATE $table_name SET is_on = %d, db_url = %s, db_login = %s, db_pass = %s, db_name=%s, db_table_name = %s, refresh_rate = %d, refresh_quantity = %d";
+		$wpdb->query($wpdb->prepare($query, $is_on, $db_url, $db_login, $db_pass, $db_name, $db_table_name, $refresh_rate, $refresh_quantity));
 	}
 
 	function __construct(){
@@ -56,6 +57,7 @@ class MG_Config
 		$this->db_login = $config->db_login;
 		$this->db_pass = $config->db_pass;
 		$this->db_name = $config->db_name;
+		$this->db_table_name = $config->db_table_name;
 		$this->refresh_quantity = $config->refresh_quantity;
 		$tq = $this->convert_from_seconds($config->refresh_rate);
 		$this->refresh_rate = $tq[0];
