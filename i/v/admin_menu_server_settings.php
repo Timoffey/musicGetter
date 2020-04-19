@@ -62,16 +62,19 @@ input:checked + .slider:before {
 
 /* The end of sliders */
 	[type=submit]{
-	background-color: #4CAF50; /* Green */
-    border: none;
-    color: white;
-    padding: 10px 35px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    border-radius: 10px;
-  
+		background-color: #4CAF50; /* Green */
+	    border: none;
+	    color: white;
+	    padding: 10px 35px;
+	    text-align: center;
+	    text-decoration: none;
+	    display: inline-block;
+	    font-size: 16px;
+	    border-radius: 10px;
+	}
+
+	.reset{
+		background-color: #AF4C50;
 	}
 	[name=refresh_rate]{
 		width: 4em;
@@ -109,6 +112,13 @@ input:checked + .slider:before {
 		<option id = "days" value = "d">Дней</option>
 	</select></div>
 	<input type="submit" class="input input-time" value="Сохранить">
+	</form>
+	<form method="post">
+		<input class="reset" name="reset" type="submit" value="Очистить базы">
+		<div class="input">
+			<label class="input" for="reset_checkbox">Да, я хочу удалить все базы</label>
+			<input required id="reset_checkbox"type="checkbox">
+		</div>
 	</form>
 </div>
 <script type="text/javascript">

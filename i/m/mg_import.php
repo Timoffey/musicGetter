@@ -163,7 +163,10 @@ class MG_Import{
 	public function get_filter(){
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'mg_import_filter';
-		$row = $wpdb->get_row("SELECT * FROM $table_name");
+		// Эта конструкция необходима, чтобы не было ошибки, в первый раз, когда таблица mg_import_filter ещё не создана
+		if($wpdb->get_var("SHOW TABLES LIKE '$table_name'") == $table_name) {
+			$row = $wpdb->get_row("SELECT * FROM $table_name");
+		}else $row = NULL;
 		return $row;
 	}
 }

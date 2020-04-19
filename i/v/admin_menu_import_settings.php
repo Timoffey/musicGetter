@@ -7,10 +7,6 @@ if ($_POST){
  	$filter=$import->get_filter();
  	$list = $import->get_local_db();
  	$list_size=count($list);
-
-
-
-
 ?>
 
 <style>
