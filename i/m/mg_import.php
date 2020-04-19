@@ -35,6 +35,7 @@ class MG_Import{
 		return $row;
 	}
 	
+
 	// Получаем поля удалённой БД
 	private function get_remote_db(){
 		include_once(dirname(__FILE__)."/../m/mg_config.php");
@@ -168,5 +169,75 @@ class MG_Import{
 			$row = $wpdb->get_row("SELECT * FROM $table_name");
 		}else $row = NULL;
 		return $row;
+	}
+	public function import(){
+		// Собираем строчку фильтров для запросов
+		$sql_filter = 'WHERE 1 = 1 AND';
+		foreach ($this->get_filter() as $key => $value) {
+			if($value AND $value !=" "){
+				$sql_filter .= '`'.$key.'` = "'.trim($value).'" AND '; 	
+			}
+		}
+		$sql_filter = rtrim($sql_filter, ' AND ');
+
+
+		// Подготавливаем подключение к удалённой и локальной базам
+		include_once(dirname(__FILE__)."/../m/mg_config.php");
+		$config = new MG_Config;
+		// Подключаемся к удалённой БД. Данные берём из конфига.
+		$mysqli = new mysqli($config->db_url, $config->db_login, $config->db_pass, $config->db_name);
+		if ($mysqli->connect_errno) {
+		    echo "<br>Не удалось подключиться к MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+		}
+		// Подготовка получения данных из локальной базы
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'mg_list';
+
+		
+
+
+		//Блок получения количества записей в удалённой базе, с учётом фильтров и в локальной.
+		$result=$mysqli->query("SELECT COUNT(`id`) FROM `$config->db_table_name` $sql_filter");
+		$size=$result->fetch_array()[0];
+		$current = $wpdb->get_var("SELECT COUNT(`id`) FROM $table_name");
+		
+
+		while (($size-$current)>0){
+			// Блок составления первой части инсерта с полями для инсерта
+			// Делаем запрос в удалённую базу на одну строку, вытаскиваем в цикле поля, собираем в запрос.
+			$final_query="INSERT INTO $table_name (";
+			$result2=$mysqli->query("SELECT * FROM `$config->db_table_name` $sql_filter LIMIT 1");
+			while($res=$result2->fetch_object()){
+				$keys='';
+				foreach ($res as $key => $value) {
+					$keys.="`".$key."`, ";
+				}
+			$final_query .= rtrim($keys,", ").") VALUES ";
+			}
+
+			// Блок составления второй части инсерта со значениями
+			// Делаем запрос в удалённую базу на количество строк, указанное в конфиге
+			// Также в запросу присутствует смещение, равное количеству записей в локальной базе
+			// Таким образом мы будем строить запросы блоками по стольку, сколько указано в настройках
+			$result2=$mysqli->query("SELECT * FROM `$config->db_table_name` $sql_filter LIMIT $current,$config->refresh_quantity");
+			while($res=$result2->fetch_object()){
+				$values='(';
+				foreach ($res as $key => $value) {
+					$values.="'".$value."', ";
+				}
+				$final_query .= rtrim($values,", ")."),";
+			}
+
+			// Выполняем заброс блока БД, равного количесту строк, указанных в настройках
+			$wpdb->query($final_query);
+			// После этого, обновляем параметры счётчиков и, в случае надобности, формируем слудующий блок данных.
+
+			// Блок получения количества записей в удалённой базе, с учётом фильтров и в локальной.
+			// Нужен для контроля общего цикла while(205)
+			$result=$mysqli->query("SELECT COUNT(`id`) FROM `$config->db_table_name` $sql_filter");
+			$size=$result->fetch_array()[0];
+			$current = $wpdb->get_var("SELECT COUNT(`id`) FROM $table_name");
+		}
+
 	}
 }

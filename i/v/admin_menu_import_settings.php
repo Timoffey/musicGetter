@@ -62,10 +62,14 @@ if ($_POST){
 		<h2>Фильтры для импорта</h2>
 		<?php
 			for ($i=1;$i<=$list_size;$i++){
-				echo "$list[$i]: <div class='input'><input type='text' size='50' name='$list[$i]' value='".$filter->{$list[$i]}."''></div><br>";
+				echo "$list[$i]: <div class='input'><input type='text' size='50' name='$list[$i]' value='".trim($filter->{$list[$i]})."''></div><br>";
 				echo "<input hidden name= 'import_filter[]' value=$list[$i]>";
 			}
 		?>
 		<input type="submit" value="Настроить">
+	</form>
+	<form method="post">
+		<input type="hidden" name="test" value="on">
+		<input type="submit" value="Тест импорта">
 	</form>
 </div>

@@ -22,3 +22,6 @@ if (isset($_POST['import_filter'])){
 	}
 	$import->set_filter($array);
 }
+if (isset($_POST['test'])){
+	$import->import();
+}
