@@ -94,23 +94,23 @@ input:checked + .slider:before {
 
 </style>
 <div class = "wrapper"><form method="post">
-	Включить/выключить работу плагина 
+	<label>Включить/выключить работу плагина 
 	<label class="switch">
 		<input type="hidden" name="is_on" value="off">
   		<input type="checkbox" name="is_on" <?php if($config->is_on)echo'checked'?> value="1">
   		<span class="slider"></span>
-	</label>
-	Адрес БД: <div class="input"><input type="url" size="50" name="db_url" value="<?=$config->db_url?>"></div><br>
-	Логин от БД: <div class="input"><input type="text" size="50" name="db_login" value="<?=$config->db_login?>"></div><br>
-	Пароль от БД:<div class="input"><input type="password" size="50" name="db_pass" value="<?=$config->db_pass?>"></div><br>
-	Имя БД:<div class="input"><input type="text" size="50" name="db_name" value="<?=$config->db_name?>"></div><br>
-	Имя таблицы:<div class="input"><input type="text" size="50" name="db_table_name" value="<?=$config->db_table_name?>"></div><br>
-	Cтрок БД обновляемых за раз: <div class="input"><input type="number" name="refresh_quantity" value="<?=$config->refresh_quantity?>"></div><br>
-	Обновлять БД каждые <div class="input input-time"><input name = "refresh_rate" type="number" value="<?=$config->refresh_rate?>"> <select name="refresh_period">
+	</label></label>
+	<label>Адрес БД: <div class="input"><input type="url" size="50" name="db_url" value="<?=$config->db_url?>"></div></label><br>
+	<label>Логин от БД: <div class="input"><input type="text" size="50" name="db_login" value="<?=$config->db_login?>"></div></label><br>
+	<label>Пароль от БД:<div class="input"><input type="password" size="50" name="db_pass" value="<?=$config->db_pass?>"></div></label><br>
+	<label>Имя БД:<div class="input"><input type="text" size="50" name="db_name" value="<?=$config->db_name?>"></div></label><br>
+	<label>Имя таблицы:<div class="input"><input type="text" size="50" name="db_table_name" value="<?=$config->db_table_name?>"></div></label><br>
+	<label>Cтрок БД обновляемых за раз: <div class="input"><input type="number" name="refresh_quantity" value="<?=$config->refresh_quantity?>"></div></label><br>
+	<label>Обновлять БД каждые <div class="input input-time"><input name = "refresh_rate" type="number" value="<?=$config->refresh_rate?>"> <select name="refresh_period">
 		<option id = "minutes" value = "m">Минут</option>
 		<option id = "hours" value = "h">Часов</option>
 		<option id = "days" value = "d">Дней</option>
-	</select></div>
+	</select></div></label>
 	<input type="submit" class="input input-time" value="Сохранить">
 	</form>
 	<form method="post">

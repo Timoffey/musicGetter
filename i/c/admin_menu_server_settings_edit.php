@@ -1,11 +1,8 @@
 <?php 
 // Обработка нажатия "Очистить базы"
 if (isset($_POST['reset'])){
-?>
-	<script>
-		alert('Базы пересозданы');
-	</script>
-<?php
+	include_once(dirname(__FILE__)."/../v/showMessage.php");
+	showMessage('Базы пересозданы');
 	uninstall_musicGetter_plugin();
 	install_musicGetter_plugin();
 }else{

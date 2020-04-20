@@ -74,12 +74,12 @@ input:checked + .slider:before {
 </style>
 <div class = "wrapper">
 	<form method="post">
-		MultiLinks 
+		<label>MultiLinks 
 		<label class="switch">
 			<input type="hidden" name="multilinks" value="off">
 	  		<input type="checkbox" name="multilinks" value="on">
 	  		<span class="slider"></span>
-		</label>
+		</label></label>
 		<input type="submit" value="Сохранить">
 	</form>
 
@@ -87,21 +87,21 @@ input:checked + .slider:before {
 
 	<form method="post">
 		<h2>Формирование листов</h2>
-		Link1 
+		<label>Link1 
 		<select id = "select_link1" onchange="checkSelect(1)">
 		<option value="n">None</option>	
 		<option value="w">White</option>	
 		<option value="b">Black</option>	
 		</select>
-		<input id = "link1" type="text" size="60" name="link1" placeholder="Введите коды стран через запятую: DE,EN,RU..." hidden><br>
+		<input id = "link1" type="text" size="60" name="link1" placeholder="Введите коды стран через запятую: DE,EN,RU..." hidden></label><br>
 		
-		Link2
+		<label>Link2
 		<select id = "select_link2" onchange="checkSelect(2)">
 		<option value="n">None</option>	
 		<option value="w">White</option>	
 		<option value="b">Black</option>	
 		</select>
-		<input id = "link2" type="text" size="60" name="link2" placeholder="Введите коды стран через запятую: DE,EN,RU..." hidden><br>
+		<input id = "link2" type="text" size="60" name="link2" placeholder="Введите коды стран через запятую: DE,EN,RU..." hidden></label><br>
 		<input type="submit" value="Сохранить все листы">
 	</form>
 </div>

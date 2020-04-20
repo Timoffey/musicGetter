@@ -23,10 +23,10 @@
 	}
 </style>
 <div class="wrapper">
-	Meta title <div class="input"><input type="text" size="40" name="meta_title"></div><br>
-	Meta description <div class="input"><input type="text" size="40" name="meta_description"></div><br>
-	Meta tags <div class="input"><input type="text" size="40" name="meta_tags"></div><br>
-	Post title <div class="input"><input type="text" size="40" name="post_title"></div><br>
-	Post text <div class="input"><input type="text" size="40" name="post_text"></div><br>
+	<label>Meta title <div class="input"><input type="text" size="40" name="meta_title"></div></label><br>
+	<label>Meta description <div class="input"><input type="text" size="40" name="meta_description"></div></label><br>
+	<label>Meta tags <div class="input"><input type="text" size="40" name="meta_tags"></div></label><br>
+	<label>Post title <div class="input"><input type="text" size="40" name="post_title"></div></label><br>
+	<label>Post text <div class="input"><input type="text" size="40" name="post_text"></div></label><br>
 	<input type="submit" value="Сохранить">
 </div>

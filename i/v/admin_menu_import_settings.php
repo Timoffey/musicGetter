@@ -38,20 +38,20 @@ if ($_POST){
 <div class = "wrapper">
 	<form method="post">
 		<input type="hidden" name="actualize" value = "on">
-		Для актуализации структуры локальной БД нажмите <div class="input"><input type="submit" value="Обновить"></div>
+		<label>Для актуализации структуры локальной БД нажмите <div class="input"><input type="submit" value="Обновить"></div></label>
 	</form>
 
 	<hr>
 
 	<form method="post">
-		Выберите поля для проверки их актуальности 
+		<label>Выберите поля для проверки их актуальности 
 		<select name="update_fields[]" multiple size="<?=$list_size?>">
 			<?php
 				for ($i=1;$i<=$list_size;$i++){
 					echo "<option value='$list[$i]'>$list[$i]</option>";
 				}
 			?>
-		</select>
+		</select></label>
 		<div class="input"><input type="submit" value="Проверить"></div>
 	</form>
 
@@ -62,7 +62,7 @@ if ($_POST){
 		<h2>Фильтры для импорта</h2>
 		<?php
 			for ($i=1;$i<=$list_size;$i++){
-				echo "$list[$i]: <div class='input'><input type='text' size='50' name='$list[$i]' value='".trim($filter->{$list[$i]})."''></div><br>";
+				echo "<label>$list[$i]: <div class='input'><input type='text' size='50' name='$list[$i]' value='".trim($filter->{$list[$i]})."''></div></label><br>";
 				echo "<input hidden name= 'import_filter[]' value=$list[$i]>";
 			}
 		?>
