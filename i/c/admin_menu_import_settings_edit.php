@@ -1,9 +1,10 @@
 <?php
+include_once(dirname(__FILE__)."/../v/showMessage.php");
 include_once(dirname(__FILE__)."/../m/mg_import.php");
 $import = new MG_Import;
 
 if (isset($_POST['actualize'])){
-	include_once(dirname(__FILE__)."/../v/showMessage.php");
+	
 	if($import->actualize()){
 		showMessage('База успешно актуализирована!');
 	}else{
@@ -12,8 +13,11 @@ if (isset($_POST['actualize'])){
 }
 
 if (isset($_POST['update_fields'])){
-	echo 'Обновлены следующие поля:<br>';
-	var_dump($_POST['update_fields']);
+	if($import->update_fields($_POST['update_fields'])){
+	showMessage('Записи успешно обновлены');
+	}else{
+		showMessage('Записи уже актуальны');
+	}
 }
 
 if (isset($_POST['import_filter'])){

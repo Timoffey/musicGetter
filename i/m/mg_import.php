@@ -137,7 +137,17 @@ class MG_Import{
 	    $sql = "INSERT INTO $table_name ($sql2_names) VALUES ($sql2_values)";
 	    $wpdb->query($sql);
 	}
-	
+	private function get_sql_filter(){
+		// Собираем строчку фильтров для запросов
+		$sql_filter = 'WHERE 1 = 1 AND ';
+		foreach ($this->get_filter() as $key => $value) {
+			if($value AND $value !=" "){
+				$sql_filter .= '`'.$key.'` = "'.trim($value).'" AND '; 	
+			}
+		}
+		$sql_filter = rtrim($sql_filter, ' AND ');
+		return $sql_filter;
+	}
 	// Актуализация локальной БД относительно удалённой. Если разница есть – добавляем поля.
 	public function actualize(){
 		$remote_db=$this->get_remote_db();
@@ -172,14 +182,7 @@ class MG_Import{
 	}
 	public function import(){
 		// Собираем строчку фильтров для запросов
-		$sql_filter = 'WHERE 1 = 1 AND';
-		foreach ($this->get_filter() as $key => $value) {
-			if($value AND $value !=" "){
-				$sql_filter .= '`'.$key.'` = "'.trim($value).'" AND '; 	
-			}
-		}
-		$sql_filter = rtrim($sql_filter, ' AND ');
-
+		$sql_filter = $this->get_sql_filter();
 
 		// Подготавливаем подключение к удалённой и локальной базам
 		include_once(dirname(__FILE__)."/../m/mg_config.php");
@@ -238,6 +241,54 @@ class MG_Import{
 			$size=$result->fetch_array()[0];
 			$current = $wpdb->get_var("SELECT COUNT(`id`) FROM $table_name");
 		}
+
+	}
+
+	public function update_fields($fields){
+		// Собираем строчку полей для запроса
+		$sql_fields='`id`, ';
+		foreach ($fields as $key => $value) {
+			$sql_fields .= "`$value`, ";
+		}
+		$sql_fields = rtrim($sql_fields,", ");
+		// Собираем строчку фильтров для запросов
+		$sql_filter = $this->get_sql_filter();
+
+		// Подготавливаем подключение к удалённой и локальной базам
+		include_once(dirname(__FILE__)."/../m/mg_config.php");
+		$config = new MG_Config;
+		// Подключаемся к удалённой БД. Данные берём из конфига.
+		$mysqli = new mysqli($config->db_url, $config->db_login, $config->db_pass, $config->db_name);
+		if ($mysqli->connect_errno) {
+		    echo "<br>Не удалось подключиться к MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+		}
+		// Подготовка получения данных из локальной базы
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'mg_list';
+
+
+		$result = $mysqli->query("SELECT $sql_fields FROM $config->db_table_name $sql_filter");
+		$res=$result->fetch_all(MYSQLI_ASSOC);
+		$res2 = $wpdb->get_results("SELECT $sql_fields FROM $table_name $sql_filter",ARRAY_A);
+		
+		// Гениальное решение, которое я нашёл на стаковерфлоу!
+		$diff=array_map('unserialize',array_diff(array_map('serialize',$res), array_map('serialize', $res2)));
+		if ($diff){
+			foreach ($diff as $num => $array) {
+				$q="UPDATE `$table_name` SET ";
+				$id="";	
+				foreach($array as $key => $value){
+					if($key!='id'){
+						$q .= '`'.$key.'` = "'.$value.'", ';
+					}else $id=$value;
+				}
+				$q = rtrim($q,", ");
+				$q .= " WHERE id=$id";
+				// Да, надо было сделать через $wpdb->update(). Но я уже подсобрал SQL строку. Может быть потом обновлю )
+				$wpdb->query($q);
+				return 1;
+			}
+		}else return 0;
 
 	}
 }
