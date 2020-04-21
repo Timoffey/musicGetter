@@ -52,27 +52,14 @@ function install_musicGetter_plugin(){
 
 
 	// Создаём таблицу под настройки Гео. Тут будет переключатель мультилинка
-	// и настройка блэк/вайт листов на поля со ссылками. 
-	// Как-то оно будет обновляться, мне пока не понятно как оно будет определять тип.
+	// и настройка блэк/вайт листов на поля со ссылками. Будем хранить JSON с типом поля и значением
 	$table_name = $wpdb->prefix . 'mg_geo';
 	if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name ){
 	    $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
-	    `multi_links` tinyint(1) NOT NULL,
-	    `geo_field_1` varchar(10) NOT NULL,
-	    `geo_field_2` varchar(10) NOT NULL
+	    `multi_links` tinyint(1) NOT NULL
 	    ) ENGINE = MyISAM DEFAULT CHARSET=utf8;";
     $wpdb->query($sql);
-	}
-
-	// Создаём таблицу под список стран в листах.
-	// Как-то оно будет обновляться, мне пока не понятно как оно будет определять тип.
-	$table_name = $wpdb->prefix . 'mg_geo_lists';
-	if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name ){
-	    $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
-	    `geo_field_1` varchar(255) NOT NULL,
-	    `geo_field_2` varchar(255) NOT NULL
-	    ) ENGINE = MyISAM DEFAULT CHARSET=utf8;";
-    $wpdb->query($sql);
+    $wpdb->insert($table_name,array('multi_links' => 'on'));
 	}
 }
 

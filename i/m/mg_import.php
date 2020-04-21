@@ -20,9 +20,9 @@ class MG_Import{
 	}
 
 	// Получаем поля локальной БД
-	public function get_local_db(){
+	public function get_local_db($table = 'mg_list'){
 		global $wpdb;
-		$table_name = $wpdb->prefix . 'mg_list';
+		$table_name = $wpdb->prefix . $table;
 		// Смотрим заголовки и отправляем их, так мы на зависим от наличия записей
 		$row = $wpdb->get_row("SELECT * FROM $table_name");
 			$row = $wpdb->get_col_info('name');
@@ -155,6 +155,10 @@ class MG_Import{
 		$diff = $this->compare($local_db,$remote_db);
 		if ($diff){
 			$this->update_db($diff);
+			// Обновляем также поля для гео
+			include_once(dirname(__FILE__)."/../m/mg_geo.php");
+			$geo = new MG_Geo;
+			$geo->update_database();
 			return 1;
 		}else{
 			return 0;

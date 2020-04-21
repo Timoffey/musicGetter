@@ -1,3 +1,11 @@
+<?php
+include_once(dirname(__FILE__)."/../m/mg_geo.php");
+$geo = new MG_Geo;
+$links=$geo->get_links();
+if ($_POST){
+	include_once(dirname(__FILE__)."/../c/admin_menu_geo_settings_edit.php");
+}
+?>
 <style>
 	/* The switch - the box around the slider */
 .switch {
@@ -77,7 +85,7 @@ input:checked + .slider:before {
 		<label>MultiLinks 
 		<label class="switch">
 			<input type="hidden" name="multilinks" value="off">
-	  		<input type="checkbox" name="multilinks" value="on">
+	  		<input type="checkbox" <?php if($geo->get_multilinks())echo"checked "?>name="multilinks" value="on">
 	  		<span class="slider"></span>
 		</label></label>
 		<input type="submit" value="Сохранить">
@@ -87,30 +95,28 @@ input:checked + .slider:before {
 
 	<form method="post">
 		<h2>Формирование листов</h2>
-		<label>Link1 
-		<select id = "select_link1" onchange="checkSelect(1)">
-		<option value="n">None</option>	
-		<option value="w">White</option>	
-		<option value="b">Black</option>	
-		</select>
-		<input id = "link1" type="text" size="60" name="link1" placeholder="Введите коды стран через запятую: DE,EN,RU..." hidden></label><br>
-		
-		<label>Link2
-		<select id = "select_link2" onchange="checkSelect(2)">
-		<option value="n">None</option>	
-		<option value="w">White</option>	
-		<option value="b">Black</option>	
-		</select>
-		<input id = "link2" type="text" size="60" name="link2" placeholder="Введите коды стран через запятую: DE,EN,RU..." hidden></label><br>
+		<?php
+		foreach ($links as $key => $link_name) {
+			?>
+			<label><?=$link_name?> 
+			<select id = "select_link1" onchange="checkSelect('<?=$link_name?>')">
+			<option value="n">None</option>	
+			<option value="w">White</option>	
+			<option value="b">Black</option>	
+			</select>
+			<input id = "<?=$link_name?>" type="text" size="60" name="<?=$link_name?>" placeholder="Введите коды стран через запятую: DE,EN,RU..." hidden></label><br>
+			<?php
+		}
+		?>
 		<input type="submit" value="Сохранить все листы">
 	</form>
 </div>
 <script>
-	function checkSelect(i){
-		if(document.getElementById('select_link'+i).value == 'n'){
-			document.getElementById('link'+i).style.display='none';
+	function checkSelect(link){
+		if(document.getElementById(link).value == 'n'){
+			document.getElementById(link).style.display='none';
 		}else{
-			document.getElementById('link'+i).style.display='inline';
+			document.getElementById(link).style.display='inline';
 		}
 	}
 </script>
