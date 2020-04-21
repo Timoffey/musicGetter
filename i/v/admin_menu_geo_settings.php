@@ -5,6 +5,7 @@ $links=$geo->get_links();
 if ($_POST){
 	include_once(dirname(__FILE__)."/../c/admin_menu_geo_settings_edit.php");
 }
+$lists=$geo->get_lists();
 ?>
 <style>
 	/* The switch - the box around the slider */
@@ -99,12 +100,18 @@ input:checked + .slider:before {
 		foreach ($links as $key => $link_name) {
 			?>
 			<label><?=$link_name?> 
-			<select id = "select_link1" onchange="checkSelect('<?=$link_name?>')">
-			<option value="n">None</option>	
-			<option value="w">White</option>	
-			<option value="b">Black</option>	
+			<select id = "select_<?=$link_name?>" name = "select_<?=$link_name?>" onchange="checkSelect('<?=$link_name?>')">
+			<option <?php if ($lists[$link_name]->type == 'n') echo 'selected '?>value="n">None</option>	
+			<option <?php if ($lists[$link_name]->type == 'w') echo 'selected '?>value="w">White</option>	
+			<option <?php if ($lists[$link_name]->type == 'b') echo 'selected '?>value="b">Black</option>	
 			</select>
-			<input id = "<?=$link_name?>" type="text" size="60" name="<?=$link_name?>" placeholder="Введите коды стран через запятую: DE,EN,RU..." hidden></label><br>
+			<input id = "<?=$link_name?>" 
+				type="text" 
+				size="60" 
+				name="<?=$link_name?>" 
+				placeholder="Введите коды стран через запятую: DE,EN,RU..." <?php if ($lists[$link_name]->type == 'n') echo 'hidden'?>
+				value=<?=$lists[$link_name]->value?>>
+			</label><br>
 			<?php
 		}
 		?>
@@ -113,7 +120,7 @@ input:checked + .slider:before {
 </div>
 <script>
 	function checkSelect(link){
-		if(document.getElementById(link).value == 'n'){
+		if(document.getElementById('select_'+link).value == 'n'){
 			document.getElementById(link).style.display='none';
 		}else{
 			document.getElementById(link).style.display='inline';

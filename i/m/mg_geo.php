@@ -63,4 +63,20 @@ public function get_multilinks(){
 	$table_name = $wpdb->prefix . 'mg_geo';
 	return $wpdb->get_var("SELECT multi_links FROM $table_name");
 }
+
+public function set_lists($types,$values){
+	global $wpdb;
+	$table_name = $wpdb->prefix . 'mg_geo';
+	foreach ($types as $key => $value) {
+		$wpdb->query("UPDATE $table_name SET $key = '{\"type\":\"$value\",\"value\":\"$values[$key]\"}'");
+	}
+}
+
+public function get_lists(){
+	global $wpdb;
+	$table_name = $wpdb->prefix . 'mg_geo';
+	$link=$wpdb->get_row("SELECT * FROM $table_name", ARRAY_A);
+	return $link=array_map('json_decode',$link);
+	
+}
 }
