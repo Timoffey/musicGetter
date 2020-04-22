@@ -5,6 +5,7 @@ if ($_POST){
 	include_once(dirname(__FILE__)."/../c/admin_menu_template_settings_edit.php");
 }
 $fields=$template->get_template();
+$template->get_delta_data();
 ?>
 <style>
 	[type=submit]{
@@ -30,6 +31,8 @@ $fields=$template->get_template();
 		float:right;
 	}
 </style>
+<hr>
+You can use this shortcodes in the fields: [name],[release_date],[description],[file_type],[file_size],[language],[genere],[date_added]
 <div class="wrapper">
 	<form method="post">
 	<label>Meta title <div class="input"><input type="text" size="40" name="meta_title" value="<?=$fields['meta_title']?>"></div></label><br>
