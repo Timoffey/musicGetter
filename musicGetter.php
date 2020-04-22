@@ -61,6 +61,20 @@ function install_musicGetter_plugin(){
     $wpdb->query($sql);
     $wpdb->insert($table_name,array('multi_links' => 'on'));
 	}
+
+	// Создаём таблицу под конфиг плагина. Настройки донорской БД и параметры обновления локальной БД.
+	$table_name = $wpdb->prefix . 'mg_template';
+	if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name ){
+	    $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
+	    `meta_title` varchar(40) NOT NULL,
+	    `meta_description` varchar(40) NOT NULL,
+	    `meta_tags` varchar(40) NOT NULL,
+	    `post_title` varchar(100) NOT NULL,
+	    `post_text` varchar(1000) NOT NULL
+	    ) ENGINE = MyISAM DEFAULT CHARSET=utf8;";
+    $wpdb->query($sql);
+    $wpdb->insert($table_name,array('meta_tags'=>''));
+    }
 }
 
 // При удалении плагина – сносим БД
@@ -72,7 +86,7 @@ function uninstall_musicGetter_plugin(){
     $table_name2 = $wpdb->prefix . 'mg_list';
     $table_name3 = $wpdb->prefix . 'mg_import_filter';
     $table_name4 = $wpdb->prefix . 'mg_geo';
-    $table_name5 = $wpdb->prefix . 'mg_geo_lists';
+    $table_name5 = $wpdb->prefix . 'mg_template';
     $sql = "DROP TABLE IF EXISTS $table_name,$table_name2,$table_name3,$table_name4,$table_name5";
     $wpdb->query($sql);
 }

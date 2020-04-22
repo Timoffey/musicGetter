@@ -98,6 +98,12 @@ input:checked + .slider:before {
 		<h2>Формирование листов</h2>
 		<?php
 		foreach ($links as $key => $link_name) {
+			// Небольшой блок устраняющий косяк с несозданнм объектом
+			if (!$lists[$link_name]){
+				$lists[$link_name]=(object)$lists[$link_name];
+				$lists[$link_name]->type='n';
+				$lists[$link_name]->value='';
+			}
 			?>
 			<label><?=$link_name?> 
 			<select id = "select_<?=$link_name?>" name = "select_<?=$link_name?>" onchange="checkSelect('<?=$link_name?>')">
