@@ -1,7 +1,7 @@
 <?php
 
 if(isset($_POST['make_post'])){	
-	$template->make_post();
+	$template->get_delta_data();
 }
 
 if (isset($_POST['fields'])){

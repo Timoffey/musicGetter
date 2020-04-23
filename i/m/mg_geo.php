@@ -1,7 +1,38 @@
 <?php
 class MG_Geo{
 
-
+public function filter_list($links){
+	$country='IS';
+	$lists=$this->get_lists();
+	$n=count($links);
+	// Прогоняем страну по чёрным и белым спискам
+	for ($i = 1; $i <=$n; $i++){
+		// Эта строка нужна для создания ссылки для выключенного мультилинка
+		if ($lists['link_'.$i]->type=='w' && strstr($lists['link_'.$i]->value,$country)) $white = array($links['link_'.$i]);
+		if (($lists['link_'.$i]->type=='b' && strstr($lists['link_'.$i]->value,$country))||
+			($lists['link_'.$i]->type=='w' && !strstr($lists['link_'.$i]->value,$country)))unset($links['link_'.$i]);
+	}
+	// Если мультитлинк включен
+	if($this->get_multilinks()){
+		return $links;
+	}else{
+	// Если мультитлинк выключен, а стран много, то кидаем
+			// Если не нашлось страны в вайт-листе
+		if (!isset($white)){
+			if (count($links)>1){
+				return array(array_pop($links));
+			}
+			elseif (count($links)<1){
+				return NULL;
+			}
+			elseif (count($links)==1){
+				return $links;
+			}
+		}else return $white;
+		
+	}
+	
+}
 // Возвращает список полей вида links_N
 public function get_links(){
 	include_once(dirname(__FILE__)."/mg_import.php");

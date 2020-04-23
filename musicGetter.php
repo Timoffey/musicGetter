@@ -118,3 +118,15 @@ function admin_menu_geo_settings(){
 function admin_menu_template_settings(){
     include_once('i/v/admin_menu_template_settings.php');
 }
+
+// Вот честно – я так и не смог запустить функцию из класса напрямую =( что-то набедокурили разработчики WP, не могу понять что. Раньше нормально работало.
+add_action( 'init', 'add_links_shortcode' );	
+ 
+function add_links_shortcode() {
+    add_shortcode( 'mg_links', 'link_unshort');
+}
+function link_unshort(){
+	include_once('i/m/mg_template.php');
+	$template = new MG_Template;
+	return $template->link_unshort();
+}
