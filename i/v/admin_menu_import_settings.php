@@ -70,6 +70,6 @@ if ($_POST){
 	</form>
 	<form method="post">
 		<input type="hidden" name="test" value="on">
-		<input type="submit" value="Тест импорта">
+		<input type="submit" value="Ручной импорт">
 	</form>
 </div>

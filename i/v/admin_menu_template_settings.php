@@ -30,8 +30,8 @@ $fields=$template->get_template();
 		float:right;
 	}
 </style>
-<hr>
 You can use this shortcodes in the fields: [name],[release_date],[description],[file_type],[file_size],[language],[genere],[date_added]
+<hr>
 <div class="wrapper">
 	<form method="post">
 	<label>Meta title <div class="input"><input type="text" size="70" name="meta_title" value="<?=$fields['meta_title']?>"></div></label><br>
@@ -41,6 +41,6 @@ You can use this shortcodes in the fields: [name],[release_date],[description],[
 	<input type="submit" name="fields" value="Сохранить">
 	</form>
 </div>
-<form method="post">
+<!--<form method="post">
 <input name="make_post" value ="Сделать тестовый пост" type="submit">
-</form>
+</form>-->

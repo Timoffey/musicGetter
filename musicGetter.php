@@ -117,7 +117,13 @@ function admin_menu_geo_settings(){
 function admin_menu_template_settings(){
     include_once('i/v/admin_menu_template_settings.php');
 }
-
+//Проверяем обновлялку и даём задание
+add_action('sheduler_import_action_hook','shedule_import');
+function shedule_import(){
+	include_once("i/m/mg_import.php");
+	$import = new MG_Import;
+	$import->import();
+}
 // Вот честно – я так и не смог запустить функцию из класса напрямую =( что-то набедокурили разработчики WP, не могу понять что. Раньше нормально работало.
 add_action( 'init', 'add_links_shortcode' );	
  

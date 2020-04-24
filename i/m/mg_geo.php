@@ -1,16 +1,21 @@
 <?php
 class MG_Geo{
 
+public function get_visitor_country(){
+	include_once((dirname(__FILE__)."/../dbip-client.class.php"));
+	$addrInfo = DBIP\Address::lookup($_SERVER["REMOTE_ADDR"]);
+	return $addrInfo->countryCode;
+}
 public function filter_list($links){
-	$country='IS';
+	$country=$this->get_visitor_country();
 	$lists=$this->get_lists();
 	$n=count($links);
 	// Прогоняем страну по чёрным и белым спискам
 	for ($i = 1; $i <=$n; $i++){
 		// Эта строка нужна для создания ссылки для выключенного мультилинка
-		if ($lists['link_'.$i]->type=='w' && strstr($lists['link_'.$i]->value,$country)) $white = array($links['link_'.$i]);
-		if (($lists['link_'.$i]->type=='b' && strstr($lists['link_'.$i]->value,$country))||
-			($lists['link_'.$i]->type=='w' && !strstr($lists['link_'.$i]->value,$country)))unset($links['link_'.$i]);
+		if ($lists['link_'.$i]->type=='w' && stristr($lists['link_'.$i]->value,$country)) $white = array($links['link_'.$i]);
+		if (($lists['link_'.$i]->type=='b' && stristr($lists['link_'.$i]->value,$country))||
+			($lists['link_'.$i]->type=='w' && !stristr($lists['link_'.$i]->value,$country)))unset($links['link_'.$i]);
 	}
 	// Если мультитлинк включен
 	if($this->get_multilinks()){

@@ -10,6 +10,7 @@ class MG_Config
 	public $refresh_quantity;
 	public $refresh_rate;
 	public $refresh_period;
+	public $refresh_rate_in_sec;
 
 	private function convert_from_seconds($seconds){
 		if ($seconds/60 < 60) {
@@ -46,6 +47,8 @@ class MG_Config
 		$table_name = $wpdb->prefix . 'mg_config';
 		$query = "UPDATE $table_name SET is_on = %d, db_url = %s, db_login = %s, db_pass = %s, db_name=%s, db_table_name = %s, refresh_rate = %d, refresh_quantity = %d";
 		$wpdb->query($wpdb->prepare($query, $is_on, $db_url, $db_login, $db_pass, $db_name, $db_table_name, $refresh_rate, $refresh_quantity));
+		// Запускаем планировщик
+		if ($this->is_on) wp_schedule_single_event( time() + $this->refresh_rate_in_sec, 'sheduler_import_action_hook' );
 	}
 
 	function __construct(){
@@ -62,6 +65,8 @@ class MG_Config
 		$tq = $this->convert_from_seconds($config->refresh_rate);
 		$this->refresh_rate = $tq[0];
 		$this->refresh_period = $tq[1];
+		$this->refresh_rate_in_sec=$config->refresh_rate;
+
 	}
 }
 

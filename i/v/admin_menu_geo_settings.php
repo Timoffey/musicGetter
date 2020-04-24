@@ -6,6 +6,7 @@ if ($_POST){
 	include_once(dirname(__FILE__)."/../c/admin_menu_geo_settings_edit.php");
 }
 $lists=$geo->get_lists();
+$geo->get_visitor_country();
 ?>
 <style>
 	/* The switch - the box around the slider */
