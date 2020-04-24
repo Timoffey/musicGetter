@@ -6,6 +6,7 @@ if ($_POST){
 	include_once(dirname(__FILE__)."/../c/admin_menu_geo_settings_edit.php");
 }
 $lists=$geo->get_lists();
+$iskey=$geo->get_api_key();
 $geo->get_visitor_country();
 ?>
 <style>
@@ -90,6 +91,18 @@ input:checked + .slider:before {
 	  		<input type="checkbox" <?php if($geo->get_multilinks())echo"checked "?>name="multilinks" value="on">
 	  		<span class="slider"></span>
 		</label></label>
+		<input type="submit" value="Сохранить">
+	</form>
+
+	<hr>
+		<form method="post">
+		<label><a href="https://db-ip.com/api/pricing/">IP Geolocation</a> API Key
+		<label class="switch">
+			<input type="hidden" name="api_key_use" value="off">
+	  		<input type="checkbox" <?php if($iskey['is'])echo"checked "?>name="use_api_key" value="on">
+	  		<span class="slider"></span>
+		</label></label><br>
+		<input type = "text" size=50 name = "api_key" required value="<?=$iskey['key']?>"><br>
 		<input type="submit" value="Сохранить">
 	</form>
 

@@ -1,9 +1,37 @@
 <?php
 class MG_Geo{
 
+public function set_api_key($is,$key){
+	global $wpdb;
+	$table_name = $wpdb->prefix.'mg_geo';
+	var_dump($is);
+	switch ($is) {
+		case 'on':
+			$is=1;
+			break;
+		case 'off':
+			$is=0;
+			break;
+	}
+	$wpdb->query("UPDATE $table_name SET use_api_key = '$is', api_key = '$key'");
+
+}
+
+public function get_api_key(){
+	global $wpdb;
+	$table_name = $wpdb->prefix.'mg_geo';
+	$is = $wpdb->get_var("SELECT use_api_key FROM $table_name");
+	$key = $wpdb->get_var("SELECT api_key FROM $table_name");
+	return (array('is'=>$is,'key'=>$key));
+}
 public function get_visitor_country(){
 	include_once((dirname(__FILE__)."/../dbip-client.class.php"));
+	$iskey=$this->get_api_key();
+	if ($iskey['is']){
+		DBIP\APIKey::set($iskey['key']);
+	}
 	$addrInfo = DBIP\Address::lookup($_SERVER["REMOTE_ADDR"]);
+
 	return $addrInfo->countryCode;
 }
 public function filter_list($links){

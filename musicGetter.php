@@ -56,10 +56,12 @@ function install_musicGetter_plugin(){
 	$table_name = $wpdb->prefix . 'mg_geo';
 	if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name ){
 	    $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
-	    `multi_links` tinyint(1) NOT NULL
+	    `multi_links` tinyint(1) NOT NULL,
+	    `use_api_key` tinyint(1) NOT NULL,
+	    `api_key` varchar(100) NOT NULL
 	    ) ENGINE = MyISAM DEFAULT CHARSET=utf8;";
     $wpdb->query($sql);
-    $wpdb->insert($table_name,array('multi_links' => 'on'));
+    $wpdb->insert($table_name,array('multi_links' => 1));
 	}
 
 	// Создаём таблицу под конфиг плагина. Настройки донорской БД и параметры обновления локальной БД.
