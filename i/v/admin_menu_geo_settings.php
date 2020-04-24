@@ -99,11 +99,11 @@ input:checked + .slider:before {
 		<?php
 		foreach ($links as $key => $link_name) {
 			// Небольшой блок устраняющий косяк с несозданнм объектом
-			if (!$lists[$link_name]){
+			/*if (!$lists[$link_name]){
 				$lists[$link_name]=(object)$lists[$link_name];
 				$lists[$link_name]->type='n';
 				$lists[$link_name]->value='';
-			}
+			}*/
 			?>
 			<label><?=$link_name?> 
 			<select id = "select_<?=$link_name?>" name = "select_<?=$link_name?>" onchange="checkSelect('<?=$link_name?>')">

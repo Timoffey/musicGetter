@@ -69,10 +69,15 @@ public function update_database(){
 		$sql = "ALTER TABLE $table_name ADD (";
 		foreach ($diff as $key => $name) {
 			$sql .= $name.' varchar(40), ';
+			$links[]=$name;
 		}
 		// Отрезаем последнюю запятую, и закрывем скобку. Запрос готов, шлём!
 		$sql=rtrim($sql, ', ').')';
 		$wpdb->query($sql);
+		foreach ($links as $key => $value) {
+			$wpdb->query("UPDATE $table_name SET $value ="."'".'{"type":"n","value":""}'."'");
+		}
+		
 	}
 
 }

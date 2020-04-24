@@ -36,7 +36,7 @@ class MG_Template{
 	}
 
 	private function make_post($data,$fields){
-		
+	
 		if (!$category=$this->check_genere($data['genere']))$category=wp_insert_term($data['genere'], 'category')['term_id'];
 		if (!$this->check_language($data['language']))wp_insert_term($data['language'], 'post_tag');
 		$post_tag=$data['language'];
@@ -57,6 +57,7 @@ class MG_Template{
 	}
 	
 	private function prepare_post($array){
+		
 		$fields = $this->get_template();		
 		foreach ($array as $key => $value) {
 			foreach ($fields as $key2 => $value2) {
@@ -65,19 +66,24 @@ class MG_Template{
 				}
 			}
 		}
+
 		return $fields;
 	}
 
 	public function get_delta_data(){
 		global $wpdb;
+
 		$table_name = $wpdb->prefix . 'postmeta';
 		$table_name2 = $wpdb->prefix . 'mg_list';
 		
 		$max_post=$wpdb->get_var("SELECT MAX(meta_value) FROM $table_name WHERE `meta_key` = 'db_id'");
+
 		if (!$max_post)$max_post=0;
+
 		$delta = $wpdb->get_results("SELECT * FROM $table_name2 WHERE id>$max_post", ARRAY_A);
 		foreach ($delta as $num => $array) {
 			$fields=$this->prepare_post($array);
+
 			$this->make_post($array, $fields);
 		}
 	}

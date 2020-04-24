@@ -21,7 +21,7 @@ $fields=$template->get_template();
 	}
 
 	.wrapper{
-		width: 40vw;
+		width: 50vw;
 		font-size: 2em;
 		line-height: 2em;
 	}
@@ -34,10 +34,10 @@ $fields=$template->get_template();
 You can use this shortcodes in the fields: [name],[release_date],[description],[file_type],[file_size],[language],[genere],[date_added]
 <div class="wrapper">
 	<form method="post">
-	<label>Meta title <div class="input"><input type="text" size="40" name="meta_title" value="<?=$fields['meta_title']?>"></div></label><br>
-	<label>Meta description <div class="input"><input type="text" size="40" name="meta_description" value="<?=$fields['meta_description']?>"></div></label><br>
-	<label>Post title <div class="input"><input type="text" size="40" name="post_title" value="<?=$fields['post_title']?>"></div></label><br>
-	<label>Post text <div class="input"><input type="text" size="40" name="post_text" value="<?=$fields['post_text']?>"></div></label><br>
+	<label>Meta title <div class="input"><input type="text" size="70" name="meta_title" value="<?=$fields['meta_title']?>"></div></label><br>
+	<label>Meta description <div class="input"><input type="text" size="70" name="meta_description" value="<?=$fields['meta_description']?>"></div></label><br>
+	<label>Post title <div class="input"><input type="text" size="70" name="post_title" value="<?=$fields['post_title']?>"></div></label><br>
+	<label>Post text <div class="input"><input type="text" size="70" name="post_text" value="<?=$fields['post_text']?>"></div></label><br>
 	<input type="submit" name="fields" value="Сохранить">
 	</form>
 </div>

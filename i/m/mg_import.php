@@ -246,6 +246,11 @@ class MG_Import{
 			$current = $wpdb->get_var("SELECT COUNT(`id`) FROM $table_name");
 		}
 
+		// В конце добавляем недостающие посты
+		include_once(dirname(__FILE__)."/mg_template.php");
+		$template = new MG_Template;
+		$template->get_delta_data();
+
 	}
 
 	public function update_fields($fields){

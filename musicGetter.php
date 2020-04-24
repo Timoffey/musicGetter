@@ -66,14 +66,13 @@ function install_musicGetter_plugin(){
 	$table_name = $wpdb->prefix . 'mg_template';
 	if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name ){
 	    $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
-	    `meta_title` varchar(40) NOT NULL,
-	    `meta_description` varchar(40) NOT NULL,
-	    `meta_tags` varchar(40) NOT NULL,
+	    `meta_title` varchar(100) NOT NULL,
+	    `meta_description` varchar(100) NOT NULL,
 	    `post_title` varchar(100) NOT NULL,
 	    `post_text` varchar(1000) NOT NULL
 	    ) ENGINE = MyISAM DEFAULT CHARSET=utf8;";
     $wpdb->query($sql);
-    $wpdb->insert($table_name,array('meta_tags'=>''));
+    $wpdb->insert($table_name,array('meta_title'=>'Download [name] - [release_date] on our website', 'meta_description'=>'Are you searchig for [name]? We have everything about it on our site', 'post_title' => '[name] in high-qiality [file_type]', 'post_text'=>'Hey! You can see this song and its description: <p>[description]'));
     }
 }
 
