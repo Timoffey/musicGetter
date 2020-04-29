@@ -29,7 +29,7 @@ class MG_Template{
 		return $is['term_id'];
 	}
 
-	private function check_genere($term){
+	private function check_genre($term){
 		$taxonomy='category';
 		$is = term_exists($term, $taxonomy);
 		return $is['term_id'];
@@ -37,11 +37,10 @@ class MG_Template{
 
 	private function make_post($data,$fields){
 	
-		if (!$category=$this->check_genere($data['genere']))$category=wp_insert_term($data['genere'], 'category')['term_id'];
+		if (!$category=$this->check_genre($data['genre']))$category=wp_insert_term($data['genre'], 'category')['term_id'];
 		if (!$this->check_language($data['language']))wp_insert_term($data['language'], 'post_tag');
 		$post_tag=$data['language'];
 
-		echo 'POST!';
 		$params_array=array(
 			'post_title'=>$fields['post_title'],
 			'post_content'=>$fields['post_text'].'<br>'.'[mg_links]',
