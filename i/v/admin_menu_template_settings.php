@@ -21,7 +21,7 @@ $fields=$template->get_template();
 	}
 
 	.wrapper{
-		width: 50vw;
+		width: 60vw;
 		font-size: 2em;
 		line-height: 2em;
 	}

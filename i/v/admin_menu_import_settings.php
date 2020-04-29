@@ -27,7 +27,7 @@ if ($_POST){
 		line-height: 2em;
 	}
 	.wrapper2{
-		width: 40vw;
+		width: 60vw;
 	}
 	.input{
 		display:inline;
