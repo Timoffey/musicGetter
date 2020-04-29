@@ -55,8 +55,8 @@ class MG_Import{
 			if($value->type==10){
 				$table[$value->name] = $this->convert_mysqli_type_to_str($value->type);
 			}else{
-				// Эта строчка фиксит странный баг, с типом VARCHAR. Почему-то его размер умножается на 4.
-				if($value->type==253)$value->length*=0.25;
+				// Эта строчка фиксит странный баг, с типом VARCHAR. Почему-то его размер умножается на 4. (Не везде)
+				//if($value->type==253)$value->length*=0.25;
 				$table[$value->name] = $this->convert_mysqli_type_to_str($value->type)."(".$value->length.")";
 			}
 		}
