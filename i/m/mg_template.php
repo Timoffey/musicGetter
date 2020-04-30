@@ -42,7 +42,7 @@ class MG_Template{
 		var_dump($data['language']);
 		echo '<br>';
 		foreach ($data['genre'] as $key => $value) {
-			if ($category[]=!$this->check_genre($value))$category[]=wp_insert_term($value, 'category')['term_id'];
+			if (!$category[]=$this->check_genre($value))$category[]=wp_insert_term($value, 'category')['term_id'];
 		}
 
 		foreach ($data['language'] as $key => $value) {
