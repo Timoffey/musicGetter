@@ -36,11 +36,31 @@ class MG_Template{
 	}
 
 	private function make_post($data,$fields){
-	
-		if (!$category=$this->check_genre($data['genre']))$category=wp_insert_term($data['genre'], 'category')['term_id'];
-		if (!$this->check_language($data['language']))wp_insert_term($data['language'], 'post_tag');
-		$post_tag=$data['language'];
+		// Если поле жанра и языка разбито запятыми, формируем массив. После чего,добавляем все значения.
+		$data['genre']=explode(',',$data['genre']);
+		$data['language']=explode(',',$data['language']);
+		var_dump($data['language']);
+		echo '<br>';
+		foreach ($data['genre'] as $key => $value) {
+			if ($category[]=!$this->check_genre($value))$category[]=wp_insert_term($value, 'category')['term_id'];
+		}
 
+		foreach ($data['language'] as $key => $value) {
+			//if ($post_tag[]=!$this->check_language($value))$post_tag[]=wp_insert_term($value, 'post_tag');
+
+			if (!$this->check_language($value))wp_insert_term($value, 'post_tag');
+			$post_tag[]=$value;
+		}
+
+		
+		// Убираем всякий булевый шлак, котрый навешали сравнениями в предыдущем блоке.
+		foreach ($category as $key => $value) {
+			if(is_bool($value))unset($category[$key]);
+		}
+		foreach ($post_tag as $key => $value) {
+			if(is_bool($value))unset($post_tag[$key]);
+		}
+		var_dump($post_tag);
 		$params_array=array(
 			'post_title'=>$fields['post_title'],
 			'post_content'=>$fields['post_text'].'<br>'.'[mg_links]',
@@ -48,8 +68,8 @@ class MG_Template{
 			'post_parent'   => 0,
 			'post_author'   => 1,
 			'comment_status' => 'closed',
-			'post_category'  => array($category),
-			'tags_input'     => array($post_tag),    
+			'post_category'  => $category,
+			'tags_input'     => $post_tag,    
 			'meta_input' => ['db_id'=>$data['id'], '_aioseop_title' => $fields['meta_title'], '_aioseop_description' => $fields['meta_description']]
 		);
 		$post_id=wp_insert_post($params_array);

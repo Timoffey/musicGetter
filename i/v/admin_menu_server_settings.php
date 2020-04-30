@@ -100,7 +100,7 @@ input:checked + .slider:before {
   		<input type="checkbox" name="is_on" <?php if($config->is_on)echo'checked'?> value="1">
   		<span class="slider"></span>
 	</label></label><br>
-	<label>Адрес БД: <div class="input"><input type="url" size="50" name="db_url" value="<?=$config->db_url?>"></div></label><br>
+	<label>Адрес БД: <div class="input"><input type="text" size="50" name="db_url" value="<?=$config->db_url?>"></div></label><br>
 	<label>Логин от БД: <div class="input"><input type="text" size="50" name="db_login" value="<?=$config->db_login?>"></div></label><br>
 	<label>Пароль от БД:<div class="input"><input type="password" size="50" name="db_pass" value="<?=$config->db_pass?>"></div></label><br>
 	<label>Имя БД:<div class="input"><input type="text" size="50" name="db_name" value="<?=$config->db_name?>"></div></label><br>
