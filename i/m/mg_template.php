@@ -1,5 +1,25 @@
 <?php
 class MG_Template{
+	
+	public function set_thumbs($value){
+	global $wpdb;
+	$table_name = $wpdb->prefix . 'mg_template';
+	switch ($value) {
+		case 'on':
+				$wpdb->query("UPDATE $table_name SET `thumbs` = 1");
+			break;
+		
+		case 'off':
+			$wpdb->query("UPDATE $table_name SET `thumbs` = 0");
+			break;
+		}
+	}
+	public function get_thumbs(){
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'mg_template';
+		return $wpdb->get_var("SELECT thumbs FROM $table_name");
+	}
+
 	// Преобразует шоткод вида [link id=N] в данные из ячейки таблицы mg_list -> link_N
 	public function link_unshort(){
 		include_once(dirname(__FILE__)."/mg_geo.php");
@@ -73,15 +93,38 @@ class MG_Template{
 			'meta_input' => ['db_id'=>$data['id'], '_aioseop_title' => $fields['meta_title'], '_aioseop_description' => $fields['meta_description']]
 		);
 		$post_id=wp_insert_post($params_array);
+		if($this->get_thumbs()){
+			require_once ABSPATH . 'wp-admin/includes/media.php';
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+			require_once ABSPATH . 'wp-admin/includes/image.php';
+			
+			$url = $fields['cover'];
+			$desc = "Album cover";
+
+			$img_tag = media_sideload_image( $url, $post_id, $desc, 'id');
+			set_post_thumbnail( $post_id, $img_tag);
+		}
 	}
 	
+	// Заменяем значения в полях вида [field_name] на значение из бд
 	private function prepare_post($array){
 		
 		$fields = $this->get_template();		
 		foreach ($array as $key => $value) {
 			foreach ($fields as $key2 => $value2) {
-				if(strstr($value2, "[$key]")){
+				if(strstr($value2, "[$key]")&&($key!='cover')){
 				$fields[$key2]=str_ireplace("[$key]", $value, $fields[$key2]);
+				}
+				// отдельно под картинки
+				if(strstr($value2, "[$key]")&&($key=='cover')){
+					// Если стоит галочка на миниатюру, заменяем на "", иначе делаем тег img
+					if($this->get_thumbs()){
+						$fields[$key2]=str_ireplace("[cover]", '', $fields[$key2]);
+					}else{
+						$fields[$key2]=str_ireplace("[cover]", '<img src='.$value.'>', $fields[$key2]);
+					}
+				// Ужасный хак, но что поделать.
+				$fields['cover']=$value;
 				}
 			}
 		}

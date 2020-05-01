@@ -11,3 +11,7 @@ if (isset($_POST['fields'])){
 	$fields['post_text']=$_POST['post_text'];
 	$template->set_template($fields);
 }
+
+if(isset($_POST['thumbs'])){
+	$template->set_thumbs($_POST['thumbs']);
+}
